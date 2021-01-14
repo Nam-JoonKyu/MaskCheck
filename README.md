@@ -54,12 +54,28 @@ SVM모델은 scikit-learn에서 제공하는 SVC를 그대로 이용하였습니
 | ---- | ----- | ----- |
 | Acc  | 0.93  | 0.75  |
  
+## 실행 방법
+`python pyqt.py --model_type ['cnn' or 'svm']`
+
+PyQT5 라이브러리를 이용하여 GUI를 만들었습니다. 위의 명령어를 통해 GUI를 실행할 수 있습니다.
+model_type argument를 통해 CNN모델과 SVM모델 중 선택할 수 있습니다.
+
+![gui](./misc/gui.png)
 
 ## 고찰
 
 아무래도 데이터셋의 크기가 작기 때문에 각 모델의 성능을 비교할 만큼의 유의미한 결과를 도출하진 못하는 것 같습니다.
 좀 더 데이터셋의 크기를 키워서 실험을 해야 유의미한 결과가 나올 것 같습니다. 데이터셋의 크기를 더 키우고 실시간 처리가
 가능하게끔 바꾼다면 실사용에도 충분한 모델이 될 것 같습니다.
+
+## Requirements
+
+* python==3.7
+* torch==1.5.1
+* torchvision==0.6.1
+* scikit-learn==0.20.2
+* PyQt5==5.15.2
+
 
 ## References
 
