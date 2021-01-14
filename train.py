@@ -63,44 +63,43 @@ def main(args):
 
         scheduler.step()
 
-        if not args.fast:
-            model.eval()
-            with torch.no_grad():
-                for x, y in test_loader:
-                    x, y = x.to(device), y.to(device)
-                    pred = model(x)
-                    loss = F.cross_entropy(pred, y)
-                    pred = torch.argmax(pred, dim=-1)
 
-                    acc_batch = (pred==y).float().mean()
+        model.eval()
+        with torch.no_grad():
+            for x, y in test_loader:
+                x, y = x.to(device), y.to(device)
+                pred = model(x)
+                loss = F.cross_entropy(pred, y)
+                pred = torch.argmax(pred, dim=-1)
 
-                    test_loss.append(loss.item())
-                    acc.append(acc_batch.item())
+                acc_batch = (pred==y).float().mean()
 
-                test_loss = sum(test_loss) / len(test_loss)
-                acc = sum(acc) / len(acc)
+                test_loss.append(loss.item())
+                acc.append(acc_batch.item())
 
-                print(f'Acc:{acc*100:.2f} VL:{test_loss:.4f}')
+            test_loss = sum(test_loss) / len(test_loss)
+            acc = sum(acc) / len(acc)
 
-                test_losses.append(test_loss)
-                acc_list.append(acc)
+            print(f'Acc:{acc*100:.2f} VL:{test_loss:.4f}')
 
-            if best_acc < acc:
-                best_acc = acc
+            test_losses.append(test_loss)
+            acc_list.append(acc)
 
-        torch.save({
-            'epoch': epoch,
-            'model_state_dict': model.state_dict(),
-            'optimizer_state_dict': optimizer.state_dict(),
-        }, './checkpoint/masknet.ckpt')
+        if best_acc < acc:
+            best_acc = acc
 
-        if (epoch + 1) % 10 == 0:
             torch.save({
-                'train_losses': train_losses,
-                'test_losses': test_losses,
-                'acc_list': acc_list,
-                'best_acc': best_acc
-            }, 'results.ckpt')
+                'epoch': epoch,
+                'model_state_dict': model.state_dict(),
+            }, './checkpoint/masknet.ckpt')
+
+    if (epoch + 1) % 10 == 0:
+        torch.save({
+            'train_losses': train_losses,
+            'test_losses': test_losses,
+            'acc_list': acc_list,
+            'best_acc': best_acc
+        }, 'results.ckpt')
 
     torch.save({
         'train_losses': train_losses,

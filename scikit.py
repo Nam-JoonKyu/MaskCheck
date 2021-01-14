@@ -29,8 +29,16 @@ def data_preprocess(split='train'):
 X_train, y_train = data_preprocess('train')
 X_test, y_test = data_preprocess('test')
 
-svc = SVC(kernel='linear')
-svc.fit(X_train, y_train)
+# svc = SVC(kernel='linear')
+# svc.fit(X_train, y_train)
+#
+# with open('svm.pkl', 'wb') as f:
+#     pickle.dump(svc, f)
 
-with open('svm.pkl', 'wb') as f:
-    pickle.dump(svc, f)
+with open('svm.pkl', 'rb') as f:
+    svc = pickle.load(f)
+
+pred = svc.predict(X_test)
+
+acc = (pred == y_test).mean()
+print(acc)
