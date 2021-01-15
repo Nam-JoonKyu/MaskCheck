@@ -21,7 +21,7 @@ class MyApp(QMainWindow):
 
         if model_type == 'cnn':
             self.model = MaskNet([3, 64, 128, 256, 512, 512, 512])
-            load_state = torch.load('checkpoint/masknet.ckpt', map_location='cpu')
+            load_state = torch.load('checkpoint/masknet_separable.ckpt', map_location='cpu')
             self.model.load_state_dict(load_state['model_state_dict'])
         else:
             with open('svm.pkl', 'rb') as f:
